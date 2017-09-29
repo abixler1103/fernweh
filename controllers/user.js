@@ -1,55 +1,52 @@
-var db = require("../models");
+var db = require('../models');
+var Users = db.Users;
+var Survey = db.Survey;
+var path = require('path');
 
 module.exports = function (app) {
 
-    app.get("/api/users", function (req, res) {
-        db.Users.findAll({}).then(function (dbUsers) {
+    app.get("/api/surveys", function (req, res) {
+        db.Survey.findAll({}).then(function (dbSurveys) {
             var responseObject = {
-                users: dbUsers
+                survey: dbSurveys
             }
             res.json(responseObject);
         })
     });
 
-    app.get("/api/users/:id", function (req, res) {
-       db.Users.findOne({
+    app.get("/api/surveys/:id", function (req, res) {
+       db.Survey.findOne({
            where: {
                id: req.params.id
            }
-       }).then(function(dbUsers) {
-           res.json(dbUsers);
+       }).then(function(dbSurvey) {
+           res.json(dbSurvey);
        })
     });
 
-    app.put("/api/users/:id", function (req, res) {
-        db.Users.update({
-            
-        },
-    {
-        where: {
-            id: req.params.id
-        }
-    }).then(function(dbUsers) {
-        res.json(dbUsers);
-    })
-
+    app.post("/api/surveys", function(req, res) {
+        console.log(req.body);
+        db.Survey.create({
+            departure_date: req.body.departure_date,
+            question_one: req.body.question_one,
+            question_two: req.body.question_three,
+            question_three: req.body.question_three,
+            question_four: req.body.question_four,
+            question_five: req.body.question_five
+        }).then(function(dbSurvey) {
+            res.location('/api/survey/' + dbSurvey.id);
+            res.send(201);
+        })
     });
 
-    // app.post("/api/users", function (req, res) {
-    //     console.log(req.body);
-    //     db.Users.create({
-    //         dog_name: req.body.name,
-    //         dog_photo: req.body.photo,
-    //         dog_description: req.body.description,
-    //         dog_location: req.body.location,
-    //         dog_age: req.body.age,
-    //         dog_breed: req.body.breed,
-    //         dog_gender: req.body.gender,
-    //         dog_available: true
-    //     }).then(function (dbDogs) {
-    //         res.location('/api/dogs/' + dbDogs.id);
-    //         res.send(201);
-    //     });
+    app.delete("/api/surveys", function(req, res) {
+        db.Survey.findOne({
+            where: {
+                id: req.params.id
+            }
+        }).then(function(dbSurvey) {
+            res.json(dbSurvey)
+        })
+    });
 
-    // });
 };

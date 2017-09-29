@@ -1,11 +1,11 @@
 module.exports = function (sequelize, DataTypes) {
     var Users = sequelize.define("Users", {
-        firstName: {
+        first_name: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: { len: [1, 140] }
         },
-        lastName: {
+        last_name: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: { len: [1, 140] }
@@ -14,26 +14,9 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false
         },
-        questionOne: {
+        client_id: {
             type: DataTypes.STRING,
-            allowNull: false
-        },
-        questionTwo: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        questionThree: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        questionFour: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        questionFive: {
-            type: DataTypes.BOOLEAN,
-            allownull: false,
-            defaultValue: true
+            allowNull: false,
         }
     });
     return Users;

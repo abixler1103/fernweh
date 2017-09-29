@@ -2,6 +2,7 @@ var express = require("express");
 var cors = require("cors");
 var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
+var path = require('path');
 
 var app = express();
 app.use(cors());
@@ -15,6 +16,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
+// app.get("/login", function(req, res) {
+//     res.sendFile(path.join(__dirname + '/public/login.html'));
+// });
 
 app.use(express.static("./public"));
 
