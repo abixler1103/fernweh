@@ -10,7 +10,7 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="./css/login.css">
-    <title>Document</title>
+    <title>Login</title>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 <body>
@@ -27,37 +27,6 @@
             
             <form action="/" method="post">
             
-            <div class="top-row">
-              <div class="field-wrap">
-                <label>
-                  First Name<span class="req">*</span>
-                </label>
-                <input type="text" required autocomplete="off" />
-              </div>
-          
-              <div class="field-wrap">
-                <label>
-                  Last Name<span class="req">*</span>
-                </label>
-                <input type="text"required autocomplete="off"/>
-              </div>
-            </div>
-    
-            <div class="field-wrap">
-              <label>
-                Email Address<span class="req">*</span>
-              </label>
-              <input type="email"required autocomplete="off"/>
-            </div>
-            
-            <div class="field-wrap">
-              <label>
-                Set A Password<span class="req">*</span>
-              </label>
-              <input type="password"required autocomplete="off"/>
-            </div>
-            
-            <button type="submit" class="button button-block"/>Get Started</button>
             <div class="g-signin2" data-onsuccess="onSignIn"></div>
             <a href="#" onclick="signOut();">Sign out</a>
             
@@ -70,23 +39,8 @@
             
             <form action="/" method="post">
             
-              <div class="field-wrap">
-              <label>
-                Email Address<span class="req">*</span>
-              </label>
-              <input type="email"required autocomplete="off"/>
-            </div>
-            
-            <div class="field-wrap">
-              <label>
-                Password<span class="req">*</span>
-              </label>
-              <input type="password"required autocomplete="off"/>
-            </div>
-            
-            <p class="forgot"><a href="#">Forgot Password?</a></p>
-            
-            <button class="button button-block"/>Log In</button>
+              <div class="g-signin2" data-onsuccess="onSignIn"></div>
+              <a href="#" onclick="signOut();">Sign out</a>
             
             </form>
     
@@ -97,6 +51,6 @@
     </div> <!-- /form -->
 </body>
 </html>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="./js/login.js"></script>

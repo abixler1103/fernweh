@@ -1,58 +1,38 @@
+window.onload = function() {
+  if (window.jQuery) {  
+      // jQuery is loaded  
+      alert("Yeah!");
+  } else {
+      // jQuery is not loaded
+      alert("Doesn't Work");
+  }
 
-$('.form').find('input, textarea').on('keyup blur focus', function (e) {
-  
-  var $this = $(this),
-      label = $this.prev('label');
-
-	  if (e.type === 'keyup') {
-			if ($this.val() === '') {
-          label.removeClass('active highlight');
-        } else {
-          label.addClass('active highlight');
-        }
-    } else if (e.type === 'blur') {
-    	if( $this.val() === '' ) {
-    		label.removeClass('active highlight'); 
-			} else {
-		    label.removeClass('highlight');   
-			}   
-    } else if (e.type === 'focus') {
-      
-      if( $this.val() === '' ) {
-    		label.removeClass('highlight'); 
-			} 
-      else if( $this.val() !== '' ) {
-		    label.addClass('highlight');
-			}
-    }
-
-});
-
-$('.tab a').on('click', function (e) {
-  
-  e.preventDefault();
-  
-  $(this).parent().addClass('active');
-  $(this).parent().siblings().removeClass('active');
-  
-  target = $(this).attr('href');
-
-  $('.tab-content > div').not(target).hide();
-  
-  $(target).fadeIn(600);
-  
-});
 
 gapi.load('auth2', function () {
   gapi.auth2.init();
 });
+}
 
 function onSignIn(googleUser) {
   var profile = googleUser.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Name: ' + profile.getName());
-  console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  var id_token = googleUser.getAuthResponse().id_token;  
+  console.log(id_token);
+  
+  $.post( "/authenticate", {token: id_token}, function( data ) {
+   alert(data);
+  });
+
+  // $.ajax({
+  //   type: "POST",
+  //   url: "",
+  //   data: id_token,
+  //   dataType: 'application/x-www-form-urlencoded'
+  // });
+  // console.log('Signed in as: ' + xhr.responseText);
+  // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  // console.log('Name: ' + profile.getName());
+  // console.log('Image URL: ' + profile.getImageUrl());
+  // console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 };
 
 function signOut() {
@@ -61,3 +41,4 @@ function signOut() {
     console.log('User signed out.');
   });
 }
+
