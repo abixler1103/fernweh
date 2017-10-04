@@ -1,12 +1,4 @@
 window.onload = function() {
-  if (window.jQuery) {  
-      // jQuery is loaded  
-      alert("Yeah!");
-  } else {
-      // jQuery is not loaded
-      alert("Doesn't Work");
-  }
-
 
 gapi.load('auth2', function () {
   gapi.auth2.init();
@@ -19,7 +11,8 @@ function onSignIn(googleUser) {
   console.log(id_token);
   
   $.post( "/authenticate", {token: id_token}, function( data ) {
-   alert(data);
+  //  alert(data);
+  //you will want to redirect when authentication is complete
   });
 
   // $.ajax({
