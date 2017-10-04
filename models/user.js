@@ -16,7 +16,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         client_id: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         }
     });
     return Users;

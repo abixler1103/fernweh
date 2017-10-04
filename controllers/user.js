@@ -2,9 +2,28 @@ var db = require('../models');
 var Users = db.Users;
 var Survey = db.Survey;
 var path = require('path');
-var jwt = require("jsonwebtoken");
+var Cookies = require("cookies");
+var GoogleAuth = require('google-auth-library');
+var auth = new GoogleAuth;
+var CLIENT_ID = "1035648329780-d8khj8u006n1ghd724opv2suarb6bbrk.apps.googleusercontent.com";
+var client = new auth.OAuth2(CLIENT_ID, '', '');
 
 module.exports = function (app) {
+
+    function authenticate (token, successCallback, failureCallback) {
+        client.verifyIdToken(
+            token,
+            CLIENT_ID,
+            function(e, login) {
+              if (login != null) {
+                var payload = login.getPayload();
+                var userid = payload['sub'];
+                successCallback(userid);
+              } else {
+                  failureCallback();
+              }
+            });
+    }
 
     app.get("/api/surveys", function (req, res) {
         db.Survey.findAll({}).then(function (dbSurveys) {
@@ -26,18 +45,31 @@ module.exports = function (app) {
     });
 
     app.post("/api/surveys", function (req, res) {
-        console.log(req.body);
-        db.Survey.create({
-            departure_date: req.body.departure_date,
-            question_one: req.body.question_one,
-            question_two: req.body.question_three,
-            question_three: req.body.question_three,
-            question_four: req.body.question_four,
-            question_five: req.body.question_five
-        }).then(function (dbSurvey) {
-            res.location('/api/survey/' + dbSurvey.id);
-            res.send(201);
-        })
+        var token = new Cookies(req, res).get("access_token");
+        authenticate(token, function (userid) {
+            db.Users.findOne({
+                where: {
+                    client_id: userid
+                }
+            }).then(function(dbUser) {
+                db.Survey.create({
+                    user_id: dbUser.id,
+                    departure_date: req.body.departure_date,
+                    question_one: req.body.question_one,
+                    question_two: req.body.question_three,
+                    question_three: req.body.question_three,
+                    question_four: req.body.question_four,
+                    question_five: req.body.question_five
+                }).then(function (dbSurvey) {
+                    res.location('/api/survey/' + dbSurvey.id);
+                    res.send(201);
+                })
+            })
+        },
+        function() {
+            res.sendStatus(401);
+        });
+       
     });
 
     app.delete("/api/surveys", function (req, res) {
@@ -51,31 +83,38 @@ module.exports = function (app) {
     });
 
     app.post('/authenticate', function (req, res) {
-        console.log(req.body);
-        Users.findOne({
-            client_id: req.body.client_id
-        },
-            function (err, user) {
-                if (err) throw err;
-
-                if (!user) {
-                    res.json({ success: false, message: "Authentication failed" });
-                } else if (user) {
-                    if (user.password != res.body.password) {
-                        res.json({ success: false, message: "authentication failed" })
-                    } else {
-                        var token = jwt.sign(user, app.get('superSecret'), {
-                            expiresInMinutes: 1440
-                        });
-
-                        res.json({
-                            success: true,
-                            message: "Enjoy your token",
-                            token: token
-                        });
-                    }
-                }
+        console.log(req.body.token);
+        var token = req.body.token;
+        authenticate(token, function(userid) {
+            //see if exists in database, if not create user
+            db.Users.create({
+                first_name: req.body.firstName,
+                last_name: req.body.lastName,
+                email: req.body.email,
+                client_id: req.body.clientId
+            }).then(function(dbUser) {
+                res.json(dbUser);
             })
+            console.log(userid);
+            new Cookies(req, res).set("access_token", token);
+            res.sendStatus(200);
+        }, 
+        function() {
+           res.sendStatus(401);
+        }
+    );
+    //     Users.findOne({
+    //         client_id: req.body.client_id
+    //     },
+    //         function (err, user) {
+    //             if (err) throw err;
+    //             new Cookies(req, res).set("access_token", token);
+    //             res.json({
+    //                 success: true,
+    //                 message: "Enjoy your token",
+    //                 token: token
+    //             });
+    //         });
     });
 
 };
