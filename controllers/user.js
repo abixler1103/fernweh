@@ -26,25 +26,6 @@ module.exports = function (app) {
     }
 
     app.get("/api/surveys", function (req, res) {
-        db.Survey.findAll({}).then(function (dbSurveys) {
-            var responseObject = {
-                survey: dbSurveys
-            }
-            res.json(responseObject);
-        })
-    });
-
-    app.get("/api/surveys/:id", function (req, res) {
-        db.Survey.findOne({
-            where: {
-                id: req.params.id
-            }
-        }).then(function (dbSurvey) {
-            res.json(dbSurvey);
-        })
-    });
-
-    app.post("/api/surveys", function (req, res) {
         var token = new Cookies(req, res).get("access_token");
         authenticate(token, function (userid) {
             db.Users.findOne({
@@ -52,6 +33,59 @@ module.exports = function (app) {
                     client_id: userid
                 }
             }).then(function(dbUser) {
+                db.Survey.findAll({
+                    where: {
+                        user_id: dbUser.id
+                    }
+                }).then(function (dbSurveys) {
+                    var responseObject = {
+                        survey: dbSurveys
+                    }
+                    res.json(responseObject);
+                })
+            })
+        },
+        function() {
+            res.sendStatus(401);
+        });
+
+        
+    });
+
+    app.get("/api/surveys/:id", function (req, res) {
+        var token = new Cookies(req, res).get("access_token");
+        authenticate(token, function (userid) {
+            db.Users.findOne({
+                where: {
+                    client_id: userid
+                }
+            }).then(function(dbUser) {
+                db.Survey.findOne({
+                    where: {
+                        user_id: dbUser.id,
+                        id: req.params.id
+                    }
+                }).then(function (dbSurvey) {
+                    res.json(dbSurvey);
+                })
+            })
+        },
+        function() {
+            res.sendStatus(401);
+        });
+    
+    });
+
+    app.post("/api/surveys", function (req, res) {
+        console.log(req.body);
+        var token = new Cookies(req, res).get("access_token");
+        authenticate(token, function (userid) {
+            db.Users.findOne({
+                where: {
+                    client_id: userid
+                }
+            }).then(function(dbUser) {
+                console.log(req.body);
                 db.Survey.create({
                     user_id: dbUser.id,
                     departure_date: req.body.departure_date,
@@ -61,7 +95,7 @@ module.exports = function (app) {
                     question_four: req.body.question_four,
                     question_five: req.body.question_five
                 }).then(function (dbSurvey) {
-                    res.location('/api/survey/' + dbSurvey.id);
+                    res.location('/api/surveys/' + dbSurvey.id);
                     res.send(201);
                 })
             })
@@ -72,14 +106,28 @@ module.exports = function (app) {
        
     });
 
-    app.delete("/api/surveys", function (req, res) {
-        db.Survey.findOne({
-            where: {
-                id: req.params.id
-            }
-        }).then(function (dbSurvey) {
-            res.json(dbSurvey)
-        })
+    app.delete("/api/surveys/:id", function (req, res) {
+        var token = new Cookies(req, res).get("access_token");
+        authenticate(token, function (userid) {
+            db.Users.findOne({
+                where: {
+                    client_id: userid
+                }
+            }).then(function(dbUser) {
+                db.Survey.destroy({
+                    where: {
+                        user_id: dbUser.id,
+                        id: req.params.id
+                    }
+                }).then(function (dbSurvey) {
+                    res.sendStatus(200);
+                })
+            })
+        },
+        function() {
+            res.sendStatus(401);
+        });
+        
     });
 
     app.post('/authenticate', function (req, res) {
@@ -88,33 +136,20 @@ module.exports = function (app) {
         authenticate(token, function(userid) {
             //see if exists in database, if not create user
             db.Users.create({
-                first_name: req.body.firstName,
-                last_name: req.body.lastName,
+                first_name: req.body.first_name,
+                last_name: req.body.last_name,
                 email: req.body.email,
-                client_id: req.body.clientId
+                client_id: userid
             }).then(function(dbUser) {
-                res.json(dbUser);
-            })
-            console.log(userid);
-            new Cookies(req, res).set("access_token", token);
-            res.sendStatus(200);
+                new Cookies(req, res).set("access_token", token);
+                res.sendStatus(200);
+            });
         }, 
         function() {
            res.sendStatus(401);
         }
     );
-    //     Users.findOne({
-    //         client_id: req.body.client_id
-    //     },
-    //         function (err, user) {
-    //             if (err) throw err;
-    //             new Cookies(req, res).set("access_token", token);
-    //             res.json({
-    //                 success: true,
-    //                 message: "Enjoy your token",
-    //                 token: token
-    //             });
-    //         });
+   
     });
 
 };
