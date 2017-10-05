@@ -105,7 +105,7 @@
                                     <!-- <li><a href="#works">Works</a></li> -->
                                     <li><a href="#about">Our Team</a></li>
                                     <li><a href="#contact">Trip Quiz</a></li>
-                                    <li><a href="../Dashboard/01 - AppUI Backend Template/03 - HTML Version/page_ready_profile.html">Dashboard</a></li>
+                                    <li><a href="../../views/Dashboard/Template/DashboardTemplate/page_ready_profile.html">Dashboard</a></li>
                                     <!--  <li class="dropdown nav-toggle">
                                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<b class="caret"></b></a>
                                                                         <ul class="dropdown-menu">
@@ -526,9 +526,9 @@
                     };
 
                     $.post('/api/surveys', customer, function (data, status) {
-                        // $("#submitModalBody").html(
-                        //     '<div>Success! You will be hearing from us soon!</div>');
-                        $(location).attr('href', "../Dashboard/Template/DashboardTemplate/page_ready_profile.html");
+                        $("#submitModalBody").html(
+                            '<div>Success! You will be hearing from us soon!</div>');
+                    
                         $("#surpriseButtonContainer").html(
                             '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>'
                         );
