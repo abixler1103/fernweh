@@ -506,7 +506,7 @@
         function onSignIn(googleUser) {
             var profile = googleUser.getBasicProfile();
             id_token = googleUser.getAuthResponse().id_token;
-            $("#submitModalBody").html('<a href="#" onclick="signOut();">Sign out</a>');
+            $("#submitModalBody").html('<p>Hi, ' + profile.getName() + ' </p><br/><a href="#" onclick="signOut();">Sign out</a>');
             $("#surpriseButtonContainer").html(
                 '<a id="surpriseMe" type="button" class="btn btn-outline-secondary" style="color: #ff675b;" data-toggle="modal" href="#myModal">Surprise Me!</a>'
             );
@@ -516,18 +516,21 @@
                 $.post("/authenticate", {
                     token: id_token
                 }, function (data) {
-                    alert('authd!');
                     var customer = {
-                        departure_date: $("#month:selected").text(),
-                        question_one: $("#house:selected").text(),
-                        question_two: $("#drink:selected").text(),
-                        question_three: $("#car:selected").text(),
-                        question_four: $("#workout:selected").text(),
-                        question_five: $("#clothing:selected").text()
+                        departure_date: $("#month :selected").text(),
+                        question_one: $("#house :selected").val(),
+                        question_two: $("#drink :selected").val(),
+                        question_three: $("#car :selected").val(),
+                        question_four: $("#workout :selected").val(),
+                        question_five: $("#clothing :selected").val()
                     };
 
                     $.post('/api/surveys', customer, function (data, status) {
-                        $("#submitModalBody").html('<div>Success!</div>');
+                        $("#submitModalBody").html(
+                            '<div>Success! You will be hearing from us soon!</div>');
+                        $("#surpriseButtonContainer").html(
+                            '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>'
+                        );
                     });
                 });
             });
@@ -543,7 +546,6 @@
                 gapi.load('auth2', function () {
                     gapi.auth2.init();
                 });
-
             });
         }
     </script>
