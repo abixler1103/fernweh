@@ -354,7 +354,7 @@
                                 <select class="form-control" id="month" name="input-month">
                                     <option value="">Select</option>
                                     <option value="Now">This Month</option>
-                                    <option value="Nextt">Next Month</option>
+                                    <option value="Next">Next Month</option>
                                     <option value="December">December</option>
                                     <option value="January">January</option>
                                     <option value="February">February</option>
@@ -530,19 +530,8 @@
                         $("#submitModalBody").html('<div>Success!</div>');
                     });
                 });
-
-                let surprise = {};
-
-                axios.post('/api/surveys', customer)
-                    .then(function (response) {
-                        surprise = JSON.parse(response.data);
-                        console.log(surprise);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
             });
-        };
+        }
 
         function signOut() {
             var auth2 = gapi.auth2.getAuthInstance();
@@ -554,6 +543,7 @@
                 gapi.load('auth2', function () {
                     gapi.auth2.init();
                 });
+
             });
         }
     </script>
