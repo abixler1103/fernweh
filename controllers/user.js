@@ -22,11 +22,10 @@ module.exports = function (app) {
                         where: {
                             client_id: userid
                         }
-                    }).then(function (err, dbUser) {
-                        if (err) {
-                            failureCallback();
-                        }
+                    }).then(function (dbUser) {
                         if (dbUser) {
+                            console.log("askfjbaskfjbaskfjbasf");
+                            console.log(dbUser);
                             successCallback(dbUser);
                         } else {
                             db.Users.create({
@@ -34,8 +33,8 @@ module.exports = function (app) {
                                 last_name: payload['family_name'],
                                 email: payload['email'],
                                 client_id: userid
-                            }).then(function (dbUser) {
-                                successCallback(dbUser);
+                            }).then(function (newDbUser) {
+                                successCallback(newDbUser);
                             });
                         }
                     });
@@ -91,25 +90,19 @@ module.exports = function (app) {
     app.post("/api/surveys", function (req, res) {
         console.log(req.body);
         var token = new Cookies(req, res).get("access_token");
-        authenticate(token, function (userid) {
-                db.Users.findOne({
-                    where: {
-                        client_id: userid
-                    }
-                }).then(function (dbUser) {
-                    console.log(req.body);
-                    db.Survey.create({
-                        user_id: dbUser.id,
-                        departure_date: req.body.departure_date,
-                        question_one: req.body.question_one,
-                        question_two: req.body.question_three,
-                        question_three: req.body.question_three,
-                        question_four: req.body.question_four,
-                        question_five: req.body.question_five
-                    }).then(function (dbSurvey) {
-                        res.location('/api/surveys/' + dbSurvey.id);
-                        res.send(201);
-                    })
+        authenticate(token, function (dbUser) {
+                console.log(req.body);
+                db.Survey.create({
+                    user_id: dbUser.id,
+                    departure_date: req.body.departure_date,
+                    question_one: req.body.question_one,
+                    question_two: req.body.question_three,
+                    question_three: req.body.question_three,
+                    question_four: req.body.question_four,
+                    question_five: req.body.question_five
+                }).then(function (dbSurvey) {
+                    res.location('/api/surveys/' + dbSurvey.id);
+                    res.send(201);
                 })
             },
             function () {
