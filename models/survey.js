@@ -25,6 +25,10 @@ module.exports = function (sequelize, DataTypes) {
             allownull: false,
             defaultValue: true
         },
+        destination: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
         user_id: {
             type: DataTypes.INTEGER,
             allownull: false

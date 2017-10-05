@@ -35,8 +35,7 @@ app.post("/register", function(req, res) {
                     } else if (val >= 21 && val <= 25) {
                         console.log(Denver);
                     } else {
-                        console.log(No trip
-                            for you!);
+                        console.log("No trip for you!");
                     };
                 })
                 .error(function(err) {

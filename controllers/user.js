@@ -9,7 +9,7 @@ var CLIENT_ID = "1035648329780-d8khj8u006n1ghd724opv2suarb6bbrk.apps.googleuserc
 var client = new auth.OAuth2(CLIENT_ID, '', '');
 
 module.exports = function (app) {
-
+    
     function authenticate(token, successCallback, failureCallback) {
         client.verifyIdToken(
             token,
@@ -99,7 +99,8 @@ module.exports = function (app) {
                     question_two: req.body.question_three,
                     question_three: req.body.question_three,
                     question_four: req.body.question_four,
-                    question_five: req.body.question_five
+                    question_five: req.body.question_five,
+                    // destination: req.body.destination
                 }).then(function (dbSurvey) {
                     res.location('/api/surveys/' + dbSurvey.id);
                     res.send(201);
