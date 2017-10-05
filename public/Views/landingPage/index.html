@@ -494,7 +494,7 @@
     $("#surpriseMe").on("click", function(event) {
         event.preventDefault();
 
-        var customer = {
+        var survey = {
             departure_date: $("#month").val(),
             question_one: $("#house").val(),
             question_two: $("#drink").val(),
@@ -504,7 +504,7 @@
         };
         let surprise = {};
 
-        axios.post('/register', customer)
+        axios.post('/register', survey)
             .then(function(response) {
                 surprise = JSON.parse(response.data);
                 console.log(surprise);
