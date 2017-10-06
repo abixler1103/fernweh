@@ -22,12 +22,12 @@ module.exports = function (sequelize, DataTypes) {
         },
         question_five: {
             type: DataTypes.INTEGER,
-            allownull: false,
-            defaultValue: true
+            allownull: false
         },
         destination: {
             type: DataTypes.STRING,
-            allowNull: true
+            allowNull: true,
+            defaultValue: null
         },
         user_id: {
             type: DataTypes.INTEGER,

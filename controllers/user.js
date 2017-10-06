@@ -92,6 +92,40 @@ module.exports = function (app) {
         var token = new Cookies(req, res).get("access_token");
         authenticate(token, function (dbUser) {
                 console.log(req.body);
+ 
+                var question_one_value = req.body.question_one;
+                var question_two_value = req.body.question_two;
+                var question_three_value = req.body.question_three;
+                var question_four_value = req.body.question_four;
+                var question_five_value = req.body.question_five;
+
+                //calc
+
+                val = +question_one_value + +question_two_value + +question_three_value + +question_four_value + +question_five_value;
+                var destination;
+                console.log('sdflksjdfklsfjsldkfjsfj: ' + val);
+
+                if (val <= 5) {
+                    destination = 'Napa';
+                    console.log('Napa');
+                } else if (val >= 6 && val <= 10) {
+                    destination = 'Sedona';
+                    console.log('Sedona');
+                } else if (val >= 11 && val <= 15) {
+                    destination = 'NYC';
+                    console.log('NYC');
+                } else if (val >= 16 && val <= 20) {
+                    destination = 'Savannah';
+                    console.log('Savannah');
+                } else if (val >= 21 && val <= 25) {
+                    destination = 'Denver';
+                    console.log('Denver');
+                } else {
+                    destination = 'No trip for you!';
+                    console.log("No trip for you!");
+                };
+                
+
                 db.Survey.create({
                     user_id: dbUser.id,
                     departure_date: req.body.departure_date,
@@ -100,7 +134,7 @@ module.exports = function (app) {
                     question_three: req.body.question_three,
                     question_four: req.body.question_four,
                     question_five: req.body.question_five,
-                    // destination: req.body.destination
+                    destination: destination
                 }).then(function (dbSurvey) {
                     res.location('/api/surveys/' + dbSurvey.id);
                     res.send(201);
