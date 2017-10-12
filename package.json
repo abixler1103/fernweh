@@ -19,10 +19,11 @@
     "sequelize-cli": "^3.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "node server.js",
+    // "start": "react-scripts start",
+    // "build": "react-scripts build",
+    // "test": "react-scripts test --env=jsdom",
+    // "eject": "react-scripts eject"
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
   "main": "server.js",
@@ -31,7 +32,7 @@
     "type": "git",
     "url": "git+https://github.com/abixler1103/fernweh.git"
   },
-  "author": "Taylor Clark",
+  "author": "Taylor Clark, Ashley Bixler, Lexi Majoue, Madeleine De Roux",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/abixler1103/fernweh/issues"
