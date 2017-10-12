@@ -20,9 +20,16 @@
   },
   "scripts": {
     "start": "node server.js",
+<<<<<<< HEAD
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+=======
+    // "start": "react-scripts start",
+    // "build": "react-scripts build",
+    // "test": "react-scripts test --env=jsdom",
+    // "eject": "react-scripts eject"
+>>>>>>> 7ecdcb9256dff4ec11772b2a258406e19ad502f9
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
   "main": "server.js",
@@ -31,7 +38,7 @@
     "type": "git",
     "url": "git+https://github.com/abixler1103/fernweh.git"
   },
-  "author": "Taylor Clark",
+  "author": "Taylor Clark, Ashley Bixler, Lexi Majoue, Madeleine De Roux",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/abixler1103/fernweh/issues"
